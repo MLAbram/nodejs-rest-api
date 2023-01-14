@@ -1,0 +1,25 @@
+{
+  "name": "nodejs-rest-api-mariadb",
+  "version": "1.0.0",
+  "description": "A simple Node.JS applications that will accept user activity data from a chatbot and capture it in a MariaDB.",
+  "main": "db.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MLAbram/nodejs-rest-api-mariadb.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MLAbram/nodejs-rest-api-mariadb/issues"
+  },
+  "homepage": "https://github.com/MLAbram/nodejs-rest-api-mariadb#readme",
+  "dependencies": {
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "mariadb": "^3.0.2"
+  }
+}

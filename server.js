@@ -1,5 +1,5 @@
-const pool = require('./db');
-const routes_v1 = require('./src/routes_v1');
+const pool = require('./prod/db');
+const routes_v1 = require('./prod/routes_v1');
 const http = require('http');
 const os = require('os');
 const express = require('express');
