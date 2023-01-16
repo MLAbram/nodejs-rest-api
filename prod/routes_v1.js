@@ -1,24 +1,29 @@
-const {Router} = require('express');
-const router = Router();
-const pool = require('./db');
-const controller = require('./controller');
+const express = require('express');
+const app = express();
+const db = require('./db');
 
-/* router.get('/getAllRecords/', (req, res) => {
-  res.send("Get All Records...");
-}); */
+app.get('/', (req, res) => {
+  res.redirect('https://dynamismtechnology.com/');
+});
 
-router.get('/getAllRecords/', controller.getAllRecords);
+app.get('/getAllRecords/', async (req, res) => {
+  try {
+    const result = await db.pool.query("select * from chatbot_activity;");
+    res.send(result);
+  } catch (error) {
+    throw error;
+  }
+});
 
-router.post('/post/', async function(req, res) {
+app.post('/post/', async function(req, res) {
   try {
     const {domain_t,source_t,flow_name_t,source_id_t,first_name_t,last_name_t,gender_t,timezone_t,local_t,language_t} = req.body;
     const sqlQuery = 'insert into chatbot_activity (domain_t,source_t,flow_name_t,source_id_t,first_name_t,last_name_t,gender_t,timezone_t,local_t,language_t) values (?,?,?,?,?,?,?,?,?,?);';
-    const result = await pool.query(sqlQuery, [domain_t,source_t,flow_name_t,source_id_t,first_name_t,last_name_t,gender_t,timezone_t,local_t,language_t]);
-    
-    res.status(200).send(result);
+    const result = await db.pool.query(sqlQuery, [domain_t,source_t,flow_name_t,source_id_t,first_name_t,last_name_t,gender_t,timezone_t,local_t,language_t]);
+    res.send(result);
   } catch (error) {
-    res.status(400).send(error.message);
+    res.send(error);
   }  
 });
 
-module.exports = router;
+module.exports = app;
