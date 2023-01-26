@@ -1,8 +1,11 @@
 --
 -- drop table contacts;
--- select * from contacts;
+-- truncate table contacts;
+-- select * from contacts where user_id = 1 limit 99;
+-- insert into contacts (user_id,first_name_t,last_name_t) values (1,'First','Contact');
 create table if not exists contacts (
   contact_id serial primary key,
+  user_id bigint not null,
   first_name_t varchar(50) null,
   last_name_t varchar(50) null,
   email_t varchar(50) null,

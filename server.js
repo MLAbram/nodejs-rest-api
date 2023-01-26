@@ -1,17 +1,33 @@
-const routes_v1 = require('./prod/routes_v1');
-const routes_v2 = require('./prod/routes_v2');
 const express = require('express');
 const app = express();
-const port = 3000;
+const routes_v1 = require('./api/routes_v1');
+const path = require('path');
+const HTMLFolder = path.join(__dirname, './htmldocs')
 
+app.set('view engine', 'hbs');
+
+// this will remove serialize bigint error
 BigInt.prototype.toJSON = function() { return this.toString() }
 
-app.use(express.json());
+app.use(express.static(HTMLFolder));
 app.use('/api/v1/', routes_v1);
-app.use('/api/v2/', routes_v2);
 
 app.get('/', (req, res) => {
-  res.redirect('https://dynamismtechnology.com/');
+  res.render('index');
 });
 
-app.listen(port, () => console.log(`Server listening at port: ${port}.`));
+app.get('/login', (req, res) => {
+  res.render('login');
+});
+
+app.get('/register', (req, res) => {
+  res.render('register');
+});
+
+app.get('/profile', (req, res) => {
+  res.render('profile');
+});
+
+app.listen(3000, () => {
+  console.log('Server listening on port: 3000.');
+});
