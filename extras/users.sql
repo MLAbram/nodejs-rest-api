@@ -8,6 +8,7 @@ create table if not exists users (
   first_name_t varchar(50) not null,
   last_name_t varchar(50) not null,
   email_t varchar(50) not null,
+  password_t varchar(100) not null,
   aud_insert_dt date default current_date not null,
   aud_insert_ts datetime(6) default current_timestamp not null,
   aud_update_ts datetime(6) null
