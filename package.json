@@ -2,7 +2,7 @@
   "name": "nodejs-rest-api-mariadb",
   "version": "1.0.0",
   "description": "A simple Node.JS applications that will captute contact information and save in MariaDB. There will be a web front-end to enter and view the contact information and also use authenticated API calls to view, add, and modify contact information.",
-  "main": "server.js",
+  "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js"
