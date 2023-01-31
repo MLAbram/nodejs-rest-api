@@ -13,15 +13,20 @@
         <h4>myContacts Demo</h4>
         <ul>
             <li><a href="/">Home</a></li>
-            <li><a href="/login">Login</a></li>
-            <li><a href="/register">Register</a></li>
-            <li><a href="/profile">Profile</a></li>
+            <li><a href="/login/">Login</a></li>
+            <li><a href="/register/">Register</a></li>
+            <li><a href="/profile/">Profile</a></li>
         </ul>
     </nav>
     <div class="container mt-4">
         <div class="card">
             <div class="card-body">
                 Register Form
+            </div>
+            <div>
+                {{#if message}}
+                    <h4 class="alert alert-danger mt-4">{{message}}</h4>
+                {{/if}}
             </div>
             <div class="card-body">
                 <form action="/api/v1/register/" method="post">
@@ -40,6 +45,13 @@
                     <div class="form-group">
                         <label for="password">Password</label>
                         <input type="password" class="form-control" id="password" name="password">
+                    </div>
+                    <div class="form-group">
+                        <label for="password2">Password</label>
+                        <input type="password" class="form-control" id="password2" name="password2">
+                    </div>
+                    <div>
+                        <input type="hidden" id="source" name="source" value="webform">
                     </div>
                     <button type="submit" class="btn btn-primary">Register</button>
                 </form>

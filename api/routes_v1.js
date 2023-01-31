@@ -11,7 +11,9 @@ const usersSchema = joi.object({
   first_name: joi.string().min(1).max(50).required(),
   last_name: joi.string().min(1).max(50).required(),
   email: joi.string().min(5).max(50).required().email(),
-  password: joi.string().min(5).max(100).required()
+  password: joi.string().min(5).max(100).required(),
+  password2: joi.string().min(5).max(100),
+  source: joi.string()
 });
 
 const loginSchema = joi.object({
@@ -53,6 +55,15 @@ app.post('/register/', async function(req, res) {
     return res.status(400).send('User already exists...');
   }
 
+  // validate if passwords match from webform
+  if (req.body.source == 'webform') {
+    if (req.body.password != req.body.password2) {
+        return res.render('../views/register/', {
+          message: 'Passwords do not match...'
+        });
+    }
+  }
+
   // hash password
   const salt = await bcrypt.genSalt(10);
   const hashedPassword = await bcrypt.hash(req.body.password, salt);
@@ -63,9 +74,15 @@ app.post('/register/', async function(req, res) {
     const sqlQuery = 'insert into users (first_name_t,last_name_t,email_t,password_t) values (?,?,?,?);';
     const result = await db.pool.query(sqlQuery, [first_name,last_name,email,hashedPassword]);
 
-    res.status(200).send('User "' + req.body.first_name + ' ' + req.body.last_name + '" Created...');
+    // res.status(200).send('User "' + req.body.first_name + ' ' + req.body.last_name + '" Created...');
+    res.status(200).render('/register/', {
+      message: 'User "' + req.body.first_name + ' ' + req.body.last_name + '" Created...'
+    })
   } catch(error) {
-    res.status(400).send(error);
+    // res.status(400).send(error);
+    res.status(200).render('/api/v1/register/', {
+      message: error
+    })
   }
 });
 
