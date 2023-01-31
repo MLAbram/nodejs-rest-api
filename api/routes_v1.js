@@ -7,8 +7,6 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const authenticateToken = require('./jwt');
 
-app.use(express.json());
-
 const usersSchema = joi.object({
   first_name: joi.string().min(1).max(50).required(),
   last_name: joi.string().min(1).max(50).required(),

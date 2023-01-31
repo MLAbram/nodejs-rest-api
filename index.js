@@ -4,12 +4,14 @@ const routes_v1 = require('./api/routes_v1');
 const path = require('path');
 const HTMLFolder = path.join(__dirname, './htmldocs')
 
-app.set('view engine', 'hbs');
-
 // this will remove serialize bigint error
 BigInt.prototype.toJSON = function() { return this.toString() }
 
+app.set('view engine', 'hbs');
+
 app.use(express.static(HTMLFolder));
+app.use(express.urlencoded({extended:false}));
+app.use(express.json());
 app.use('/api/v1/', routes_v1);
 
 app.get('/', (req, res) => {

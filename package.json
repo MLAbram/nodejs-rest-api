@@ -1,5 +1,5 @@
 {
-  "name": "nodejs-rest-api-mariadb",
+  "name": "nodejs-rest-api",
   "version": "1.0.0",
   "description": "A simple Node.JS applications that will captute contact information and save in MariaDB. There will be a web front-end to enter and view the contact information and also use authenticated API calls to view, add, and modify contact information.",
   "main": "index.js",
@@ -8,14 +8,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/MLAbram/nodejs-rest-api-mariadb.git"
+    "url": "git+https://github.com/MLAbram/nodejs-rest-api.git"
   },
+  "keywords": [],
   "author": "Michael Abram",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/MLAbram/nodejs-rest-api-mariadb/issues"
+    "url": "https://github.com/MLAbram/nodejs-rest-api/issues"
   },
-  "homepage": "https://github.com/MLAbram/nodejs-rest-api-mariadb#readme",
+  "homepage": "https://github.com/MLAbram/nodejs-rest-api#readme",
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "dotenv": "^16.0.3",
@@ -24,6 +25,5 @@
     "joi": "^17.7.0",
     "jsonwebtoken": "^9.0.0",
     "mariadb": "^3.0.2"
-  },
-  "keywords": []
+  }
 }
