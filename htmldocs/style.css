@@ -31,3 +31,9 @@ nav li a:hover {
     color: yellow;
     text-decoration: none;
 }
+
+.center {
+    text-align: center;
+    font-weight: lighter;
+    padding: 10px 10px;
+  }

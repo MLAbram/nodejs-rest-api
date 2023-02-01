@@ -58,7 +58,7 @@ app.post('/register/', async function(req, res) {
   // validate if passwords match from webform
   if (req.body.source == 'webform') {
     if (req.body.password != req.body.password2) {
-        return res.render('../views/register/', {
+        return res.render('/register/', {
           message: 'Passwords do not match...'
         });
     }
@@ -69,21 +69,21 @@ app.post('/register/', async function(req, res) {
   const hashedPassword = await bcrypt.hash(req.body.password, salt);
 
   // add user to users table
-  try {
-    const {first_name,last_name,email,password} = req.body;
-    const sqlQuery = 'insert into users (first_name_t,last_name_t,email_t,password_t) values (?,?,?,?);';
-    const result = await db.pool.query(sqlQuery, [first_name,last_name,email,hashedPassword]);
+  // try {
+  //   const {first_name,last_name,email,password} = req.body;
+  //   const sqlQuery = 'insert into users (first_name_t,last_name_t,email_t,password_t) values (?,?,?,?);';
+  //   const result = await db.pool.query(sqlQuery, [first_name,last_name,email,hashedPassword]);
 
-    // res.status(200).send('User "' + req.body.first_name + ' ' + req.body.last_name + '" Created...');
-    res.status(200).render('/register/', {
-      message: 'User "' + req.body.first_name + ' ' + req.body.last_name + '" Created...'
-    })
-  } catch(error) {
-    // res.status(400).send(error);
-    res.status(200).render('/api/v1/register/', {
-      message: error
-    })
-  }
+  //   // res.status(200).send('User "' + req.body.first_name + ' ' + req.body.last_name + '" Created...');
+  //   res.status(200).render('/register/', {
+  //     message: 'User "' + req.body.first_name + ' ' + req.body.last_name + '" Created...'
+  //   })
+  // } catch(error) {
+  //   // res.status(400).send(error);
+  //   res.status(200).render('/api/v1/register/', {
+  //     message: error
+  //   })
+  // }
 });
 
 // user login
