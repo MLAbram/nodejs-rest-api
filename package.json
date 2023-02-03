@@ -4,7 +4,8 @@
   "description": "A simple Node.JS applications that will captute contact information and save in MariaDB. There will be a web front-end to enter and view the contact information and also use authenticated API calls to view, add, and modify contact information.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon index.js"
   },
   "repository": {
     "type": "git",
@@ -24,6 +25,7 @@
     "hbs": "^4.2.0",
     "joi": "^17.7.0",
     "jsonwebtoken": "^9.0.0",
-    "mariadb": "^3.0.2"
+    "mariadb": "^3.0.2",
+    "nodemon": "^2.0.20"
   }
 }

@@ -6,6 +6,10 @@ const joi = require('joi');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const authenticateToken = require('./jwt');
+const path = require('path');
+const { exists } = require('fs');
+
+app.set('views', path.join(__dirname, '../views/'));
 
 const usersSchema = joi.object({
   first_name: joi.string().min(1).max(50).required(),
@@ -47,43 +51,63 @@ app.get('/',authenticateToken , (req, res) => {
 app.post('/register/', async function(req, res) {
   // validate user data
   const validation = usersSchema.validate(req.body);
-  if (validation.error) return res.status(400).send(validation.error.details[0].message);
-
+  if (validation.error) {
+    if (req.body.source == 'webform') {
+      return res.status(400).render('register', {
+        message: validation.error.details[0].message
+      });
+    } else {
+      return res.status(400).send(validation.error.details[0].message);
+    }
+  }
+  
   // check if user already exists
   const result = await db.pool.query("select email_t from users where email_t = '" + req.body.email + "';");
   if (JSON.stringify(result).length > 2) {
-    return res.status(400).send('User already exists...');
+    if (req.body.source == 'webform') {
+      return res.status(400).render('register', {
+        message: 'User Already Exists...'
+      })
+    } else {
+      return res.status(400).send('User Already Exists...');
+    }
   }
-
-  // validate if passwords match from webform
+  
+  // validate passwords match for webform users
   if (req.body.source == 'webform') {
     if (req.body.password != req.body.password2) {
-        return res.render('/register/', {
-          message: 'Passwords do not match...'
-        });
+      return res.status(400).render('register', {
+        message: 'Passwords Do Not Match...'
+      })
     }
   }
 
   // hash password
   const salt = await bcrypt.genSalt(10);
   const hashedPassword = await bcrypt.hash(req.body.password, salt);
-
+  
   // add user to users table
-  // try {
-  //   const {first_name,last_name,email,password} = req.body;
-  //   const sqlQuery = 'insert into users (first_name_t,last_name_t,email_t,password_t) values (?,?,?,?);';
-  //   const result = await db.pool.query(sqlQuery, [first_name,last_name,email,hashedPassword]);
+  try {
+    const {first_name,last_name,email,password} = req.body;
+    const sqlQuery = 'insert into users (first_name_t,last_name_t,email_t,password_t) values (?,?,?,?);';
+    const result = await db.pool.query(sqlQuery, [first_name,last_name,email,hashedPassword]);
 
-  //   // res.status(200).send('User "' + req.body.first_name + ' ' + req.body.last_name + '" Created...');
-  //   res.status(200).render('/register/', {
-  //     message: 'User "' + req.body.first_name + ' ' + req.body.last_name + '" Created...'
-  //   })
-  // } catch(error) {
-  //   // res.status(400).send(error);
-  //   res.status(200).render('/api/v1/register/', {
-  //     message: error
-  //   })
-  // }
+    if (req.body.source == 'webform') {
+      res.status(200).render('register', {
+        message: 'User "' + req.body.first_name + ' ' + req.body.last_name + '" Created...'
+      });
+    } else {
+      res.status(200).send('User "' + req.body.first_name + ' ' + req.body.last_name + '" Created...');
+    }
+  } catch(error) {
+    if (req.body.source == 'webform') {
+      res.status(200).render('register', {
+        message: error
+      });
+    } else {
+      res.status(400).send(error);
+    }
+  }
 });
 
 // user login
@@ -91,7 +115,7 @@ app.post('/login/', async function(req, res) {
   // validate user data
   const validation = loginSchema.validate(req.body);
   if (validation.error) return res.status(400).send(validation.error.details[0].message);
-
+  
   // check if user does not exist
   const emailSQL = await db.pool.query("select user_id, email_t from users where email_t = '" + req.body.email + "';");
   if (JSON.stringify(emailSQL).length == 2) {
@@ -99,7 +123,7 @@ app.post('/login/', async function(req, res) {
   } else {
     const emailResult = JSON.stringify(emailSQL[0].email_t).replace(/["]+/g, '');
   }
-
+  
   // hash password
   const salt = await bcrypt.genSalt(10);
   const hashedPassword = await bcrypt.hash(req.body.password, salt);
